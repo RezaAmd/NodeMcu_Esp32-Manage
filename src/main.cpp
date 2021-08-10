@@ -6,8 +6,8 @@ WifiService wifiService;
 Arzcharge webService;
 
 // Wifi variables.
-const char *ssid = "Nokia";
-const char *password = "reza1050";
+const char *ssid = "YOUR_SSID";
+const char *password = "YOUR_PASSWORD";
 
 void setup()
 {

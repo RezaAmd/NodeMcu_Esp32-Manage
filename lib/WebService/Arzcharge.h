@@ -6,7 +6,7 @@ class Arzcharge
 {
 private:
     const String baseUrl = "https://core.arzcharge.com/api/";
-    String apiKey = "250724216665";
+    String apiKey = "API_KEY";
 
 public:
     String GetAllDevices()
