@@ -5,15 +5,13 @@ class WifiService
 public:
     void Connect(const char *ssid, const char *password)
     {
-        String ssidString = String(ssid);
-
         WiFi.begin(ssid, password);
-        Serial.print("Connecting to " + ssidString);
+        Serial.print("Connecting to " + String(ssid));
         while (WiFi.status() != WL_CONNECTED)
         {
             Serial.print(".");
             delay(1300);
         }
-        Serial.println("\nConnected to the '" + ssidString + "'.\nIp Address: " + WiFi.localIP());
+        Serial.println("\nConnected to the '" + String(ssid) + "'.\nIp Address: " + String(WiFi.localIP()));
     }
 };
