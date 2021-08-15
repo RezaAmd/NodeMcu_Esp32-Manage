@@ -34,13 +34,18 @@ public:
         return result;
     }
 
-    void SetHeartbeatReport(String data)
+    void SetHeartbeatReport(list<int> pulseList)
     {
         DynamicJsonDocument doc(1024);
-
-        HttpResponse response = restClient.Request(baseUrl + "report/setHeartBeat/" + data,
-        HTTPMethod::POST,
-        String(serializeJson(doc, data)));
+        String data = "";
+        for (int pulse : pulseList)
+        {
+            data = data + String(pulse) + ",";
+        }
+        
+        HttpResponse response = restClient.Request(baseUrl + "report/setHeartBeat",
+                                                   HTTPMethod::POST,
+                                                   String(serializeJson(doc, data)));
 
         if (response.HttpCode == 200)
         {

@@ -24,34 +24,18 @@ void setup()
 
   config.Startup();
 
-  heartbeat.begin();
-  
-  String data;
-  std::list<int> pulseList = heartbeat.Pulses;
-  for (int pulse : pulseList)
-  {
-    data = data + String(pulse) + ",";
-  }
-  Serial.println(data);
-  //webService.SetHeartbeatReport(data);
+  // Active the pin (analog) and get data from sensor.
+   std::list<int> pulseList = heartbeat.begin(A4, 5);
+
+   for (int data : pulseList)
+   {
+     Serial.println(data);
+   }
+    Serial.println("END");
+  //webService.SetHeartbeatReport(pulseList);
 }
 
 void loop()
 {
-  // std::list<Device> devices;
-
-  // devices = webService.GetAllDevices();
-  // for (Device device : devices)
-  // {
-  //   if (device.IsActive == 1)
-  //     digitalWrite(device.Pin, HIGH);
-  //   else
-  //     digitalWrite(device.Pin, LOW);
-  // }
-
-  // Signal = analogRead(PulseSensorPurplePin);
-  // if (Signal > 550 && Signal < 3000)
-  //   Serial.println(Signal);
-
   delay(1000);
 }
