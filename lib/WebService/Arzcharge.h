@@ -1,11 +1,10 @@
 #ifndef _MYHEADER_H_
 #include <Arduino.h>
-#include <HTTPClient.h>
-#include <list>
 #include <Device.h>
 #include <ArduinoJson.h>
+#include <RestClient.h>
 
-HTTPClient client;
+RestClient restClient;
 
 class Arzcharge
 {
@@ -16,18 +15,15 @@ private:
 public:
     std::list<Device> GetAllDevices()
     {
-        Serial.println("Request to get all devices...");
-        client.begin(baseUrl + "device/getAll?token=" + apiKey);
-        int httpCode = client.GET();
-
         std::list<Device> result;
-        if (httpCode == 200)
+        HttpResponse response;
+        response = restClient.Request(baseUrl + "device/getAll?token=" + apiKey);
+
+        if (response.HttpCode == 200)
         {
-            // Deserialize response.
             StaticJsonDocument<512> doc;
-            String response = client.getString();
-            deserializeJson(doc, response);
-            // push data to list of Device.
+            deserializeJson(doc, response.Content);
+            //push data to list of Device.
             for (JsonObject data_item : doc["data"].as<JsonArray>())
             {
                 Device device;
@@ -40,16 +36,20 @@ public:
 
     void SetHeartbeatReport(String data)
     {
-        Serial.println(baseUrl + "report/setHeartBeat/" + data);
-        client.begin(baseUrl + "report/setHeartBeat/" + data);
-        client.addHeader("Content/Type", "text/plain");
         DynamicJsonDocument doc(1024);
 
-        String payload = String(serializeJson(doc, Serial));
+        HttpResponse response = restClient.Request(baseUrl + "report/setHeartBeat/" + data,
+        HTTPMethod::POST,
+        String(serializeJson(doc, data)));
 
-        int responseCore = client.POST(payload);
-        int httpCode = client.GET();
-        Serial.println(httpCode);
+        if (response.HttpCode == 200)
+        {
+            Serial.println("Information submitted successfully.");
+        }
+        else
+        {
+            Serial.println(response.HttpCode + " - " + response.Content);
+        }
     }
 };
 #define _MYHEADER_H_
