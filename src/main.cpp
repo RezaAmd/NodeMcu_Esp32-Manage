@@ -1,14 +1,13 @@
-#ifndef _MYHEADER_H_
 #include <Arduino.h>
 #include <list>
-#include <../lib/Startup/Configure.h>
+#include <Config.h>
 #include <../lib/Wifi/WifiService.h>
 #include <../lib/WebService/Arzcharge.h>
 #include <../lib/Sensors/Heartbeat.h>
 
 WifiService wifiService;
 Arzcharge webService;
-Configure configure;
+Config config;
 Heartbeat heartbeat;
 
 // Wifi variables.
@@ -22,8 +21,11 @@ void setup()
   Serial.begin(115200);
   // Connect to wifi.
   wifiService.Connect(ssid, password);
-  configure.Startup();
+
+  config.Startup();
+
   heartbeat.begin();
+  
   String data;
   std::list<int> pulseList = heartbeat.Pulses;
   for (int pulse : pulseList)
@@ -31,7 +33,7 @@ void setup()
     data = data + String(pulse) + ",";
   }
   Serial.println(data);
-  webService.SetHeartbeatReport(data);
+  //webService.SetHeartbeatReport(data);
 }
 
 void loop()
@@ -53,5 +55,3 @@ void loop()
 
   delay(1000);
 }
-#define _MYHEADER_H_
-#endif

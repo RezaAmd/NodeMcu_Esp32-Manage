@@ -1,10 +1,9 @@
 #include <Arduino.h>
 
-class Configure
+class Config
 {
 public:
     void Startup()
     {
-        pinMode(13, OUTPUT);
     }
 };
