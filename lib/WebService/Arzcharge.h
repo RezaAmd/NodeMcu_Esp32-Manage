@@ -37,15 +37,16 @@ public:
     void SetHeartbeatReport(list<int> pulseList)
     {
         DynamicJsonDocument doc(1024);
-        String data = "";
+        String data = "{\"data\":";
         for (int pulse : pulseList)
         {
             data = data + String(pulse) + ",";
         }
+        data = data + "}";
         
         HttpResponse response = restClient.Request(baseUrl + "report/setHeartBeat",
                                                    HTTPMethod::POST,
-                                                   String(serializeJson(doc, data)));
+                                                   data);
 
         if (response.HttpCode == 200)
         {
@@ -53,7 +54,7 @@ public:
         }
         else
         {
-            Serial.println(response.HttpCode + " - " + response.Content);
+            Serial.println(String(response.HttpCode) + " - " + response.Content);
         }
     }
 };

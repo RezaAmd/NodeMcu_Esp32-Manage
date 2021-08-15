@@ -5,33 +5,36 @@ class Heartbeat
 {
 private:
     int Signal;
+    int Threshold = 550;
+    int Delay = 100;
 
 public:
-    list<int> begin(int analogPin, int pin, int second = 60)
+    list<int> begin(int analogPin, int pin, int second = 60, int led = 18)
     {
+        second = (1000 / Delay) * second;
         list<int> Pulses;
-        delay(1000);
-        Serial.println(3);
-        delay(1000);
-        Serial.println(2);
-        delay(1000);
-        Serial.println(1);
         digitalWrite(pin, HIGH);
         delay(2000);
         Serial.println("The heart rate sensor is reading information...");
         while (second > 0)
         {
             Signal = analogRead(analogPin);
-            if (Signal > 550 && Signal < 3500)
+            if (Signal > 550 && Signal < 2200)
             {
-                Pulses.push_back(Signal);
+                digitalWrite(led, HIGH);
+                if (Signal >= 2000)
+                    Pulses.push_back(Signal);
+                Pulses.push_back(0);
+            }
+            else{
+                digitalWrite(led, LOW);
             }
 
-            if (second % 15 == 0)
+            if (second % 20 == 0)
                 Serial.println("");
             Serial.print(".");
             second--;
-            delay(500);
+            delay(Delay);
         }
         digitalWrite(pin, LOW);
         Serial.println("The heart sensor was deactivated.");

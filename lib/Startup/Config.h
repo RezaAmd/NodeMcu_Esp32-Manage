@@ -1,10 +1,14 @@
-#include <Arduino.h>
+#include <list>
+using namespace std;
 
 class Config
 {
 public:
-    void Startup()
+    void Startup(list<int> outputs)
     {
-        pinMode(5, OUTPUT);
+        for (int pin : outputs)
+        {
+            pinMode(pin, OUTPUT);
+        }
     }
 };
