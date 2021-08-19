@@ -8,7 +8,6 @@ GassSensor gassSensor;
 
 const int led = 18;
 const int gassAnalogPin = 33;
-const int distanceAnalogPin = 32;
 
 const int trigPin = 25; //D4
 const int echoPin = 26; //D3
@@ -22,28 +21,16 @@ void setup()
 {
   Serial.begin(115200);
 
-  config.Startup({trigPin}, {echoPin});
+  config.Startup({led}, {echoPin});
 }
 
 void loop()
 {
-  // Clears the trigPin
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-
-  // Sets the trigPin on HIGH state for 10 micro seconds
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-
-  // Reads the echoPin, returns the sound wave travel time in microseconds
-  duration = pulseIn(echoPin, HIGH);
-
-  // Calculating the distance
-  distancee = duration * 0.034;
-
-  // Prints the distance on the Serial Monitor
-  Serial.println("Distance: " + String(distancee));
-
-  delay(2000);
+  float tempeture = analogRead(34) / 100.0;
+  Serial.println("Tempeture: " + String(tempeture));
+  if (tempeture > 2)
+    digitalWrite(led, HIGH);
+  else
+    digitalWrite(led, LOW);
+  delay(100);
 }
