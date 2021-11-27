@@ -2,9 +2,6 @@
 This is a mini-project for managing the device from the server-side.
 
 Dashboard demo:
-https://agent.arzcharge.com/
-
-Api demo:
-https://core.arzcharge.com/
+[Technology On It](https://techonit.org)
 
 We are updating now...
